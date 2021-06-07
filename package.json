@@ -1,0 +1,58 @@
+{
+    "name": "parrot-disco-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "build/parrotDisocApi.js",
+    "types": "build/parrotDisocApi.d.ts",
+    "scripts": {
+        "prepare": "npm run build",
+        "test": "npx mocha --package package.json",
+        "build": "npx tsc",
+        "format": "prettier --write \"src/*.ts\"",
+        "lint": "tslint -p tsconfig.json",
+        "preversion": "npm run lint",
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags",
+        "prepublishOnly": "npm test && npm run lint"
+    },
+    "files": [
+        "build/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ClassAxion/parrot-disco-api.git"
+    },
+    "keywords": [],
+    "author": "ClassAxion",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ClassAxion/parrot-disco-api/issues"
+    },
+    "homepage": "https://github.com/ClassAxion/parrot-disco-api#readme",
+    "mocha": {
+        "require": [
+            "tsconfig-paths/register",
+            "ts-node/register"
+        ],
+        "color": true,
+        "exit": true,
+        "spec": [
+            "tests/**/*.test.ts"
+        ],
+        "timeout": 10000
+    },
+    "devDependencies": {
+        "@types/mocha": "^8.2.2",
+        "@types/node": "^15.12.1",
+        "prettier": "^2.3.1",
+        "tsconfig-paths": "^3.9.0",
+        "tslint": "^6.1.3",
+        "tslint-config-prettier": "^1.18.0"
+    },
+    "dependencies": {
+        "chai": "^4.3.4",
+        "mocha": "^9.0.0",
+        "ts-node": "^10.0.0",
+        "typescript": "^4.3.2"
+    }
+}
