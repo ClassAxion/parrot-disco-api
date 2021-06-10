@@ -23,17 +23,18 @@ export function parseCommand() {
 
     const returnArgs = [];
 
-    const commandType = Commands.first({ id: commandTypeId });
+    const commandType = Commands.find((o) => o.id == commandTypeId);
 
     returnArgs.push({ value: commandTypeId, type: 'u8' });
 
-    const commandClass = commandType.class.first({ name: commandClassName });
+    const commandClass = commandType.class.find((o) => o.name == commandClassName);
     returnArgs.push({ value: commandClass.id, type: 'u8' });
 
-    const commandsAry: any = [...commandClass.cmd];
-    var command = commandsAry.first({ name: commandName });
+    const commandsArray: any = commandClass.cmd instanceof Array ? [...commandClass.cmd] : [commandClass.cmd];
 
-    command.id = commandsAry.indexOf(command);
+    var command = commandsArray.find((o) => o.name == commandName);
+
+    command.id = commandsArray.indexOf(command);
 
     returnArgs.push({ value: command.id, type: 'u16' });
 
@@ -57,7 +58,7 @@ export function writeBuffer(command) {
         length += partLength(part);
     });
 
-    var buffer = new Buffer(length);
+    var buffer = Buffer.alloc(length);
 
     command.forEach(function (part) {
         Types[part.type].write(buffer, part.value, offset);
@@ -67,6 +68,6 @@ export function writeBuffer(command) {
     return buffer;
 }
 
-export default function (_1?: any, _2?: any, _3?: any, _4?: any) {
+export default function (_1?: any, _2?: any, _3?: any, _4?: any, _5?: any) {
     return writeBuffer(parseCommand.apply(null, arguments));
 }

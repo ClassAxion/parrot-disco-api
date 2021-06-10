@@ -7,12 +7,17 @@ import ParrotDiscoSockets from './interfaces/ParrotDiscoSockets.interface';
 import ParrotDiscoNetworkFrame from 'interfaces/ParrotDiscoNetworkFrame.interface';
 
 import { Constants } from './enums/constants.enum';
-import NetworkFrameGenerator from './utils/networkFrameGenerator.util';
+import { ParrotDiscoFlyingState } from './enums/flyingState.enum';
 
+import NetworkFrameGenerator from './utils/networkFrameGenerator.util';
+import types from './utils/types.util';
 import networkFrameParser from './utils/networkFrameParser.util';
 import commandToBuffer from './utils/commandToBuffer.util';
 
 import MediaStreaming from 'methods/MediaStreaming.method';
+import Camera from 'methods/Camera.methods';
+
+const Commands = require('./statics/commands.static.json');
 
 export default class ParrotDisco extends EventEmitter {
     private sockets: ParrotDiscoSockets;
@@ -20,9 +25,10 @@ export default class ParrotDisco extends EventEmitter {
     public networkFrameGenerator: Function = NetworkFrameGenerator();
     private pilotingData: { flag?: number; roll?: number; pitch?: number; yaw?: number; gaz?: number; psi?: number } =
         {};
-    private navData: { flyingTime?: number } = {};
+    private navData: { flyingTime?: number; battery?: number; flyingState?: ParrotDiscoFlyingState } = {};
 
     public MediaStreaming: MediaStreaming;
+    public Camera: Camera;
 
     private defaultConfig(): void {
         this.config.ip = this.config.ip || '192.168.42.1';
@@ -47,6 +53,7 @@ export default class ParrotDisco extends EventEmitter {
 
     private initializeMethods() {
         this.MediaStreaming = new MediaStreaming(this);
+        this.Camera = new Camera(this);
     }
 
     private async discover(): Promise<boolean> {
@@ -100,13 +107,137 @@ export default class ParrotDisco extends EventEmitter {
     private onPacket(message) {
         const networkFrame: ParrotDiscoNetworkFrame = networkFrameParser(message);
 
-        console.log(`Got new frame`, networkFrame);
+        if (networkFrame.type === Constants.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK) {
+            this.sendAck(networkFrame);
+
+            //console.debug(`Sent back ACK..`);
+        }
 
         if (networkFrame.id === Constants.ARNETWORK_MANAGER_INTERNAL_BUFFER_ID_PING) {
             this.navData.flyingTime =
                 networkFrame.data.readUInt32LE(0) + networkFrame.data.readUInt32LE(4) / 1000000000.0;
 
             this.sendPong(networkFrame.data);
+
+            //console.debug(`Sent back Pong..`);
+        }
+
+        if (networkFrame.id === Constants.BD_NET_DC_EVENT_ID || networkFrame.id === Constants.BD_NET_DC_NAVDATA_ID) {
+            const commandProject = networkFrame.data.readUInt8(0),
+                commandClass = networkFrame.data.readUInt8(1),
+                commandId = networkFrame.data.readUInt16LE(2);
+
+            var offset = 4;
+            var args = {};
+            var event = null;
+
+            try {
+                event = Commands.find((o) => o.id == commandProject).class.find((o) => o.id == commandClass).cmd;
+            } catch (err) {
+                this.emit('unknown', networkFrame.data);
+
+                console.debug(`Got unknown frame`, networkFrame);
+            }
+
+            if (event) {
+                if (event instanceof Array) {
+                    event = event[commandId];
+
+                    if (!event) {
+                        this.emit('unknown', networkFrame.data);
+
+                        console.debug(`Got unknown frame`, networkFrame);
+
+                        return;
+                    }
+                }
+
+                if (typeof event.arg !== 'undefined') {
+                    if (event.arg instanceof Array) {
+                        event.arg.forEach(function (arg) {
+                            if (types.hasOwnProperty(arg.type)) {
+                                args[arg.name] = types[arg.type].read(networkFrame.data, offset, arg);
+
+                                offset += types[arg.type].length;
+                            }
+                        });
+                    } else if (event.arg instanceof Object) {
+                        if (types.hasOwnProperty(event.arg.type)) {
+                            args[event.arg.name] = types[event.arg.type].read(networkFrame.data, offset, event.arg);
+                        }
+                    }
+                }
+
+                console.log(`Got`, event.name, args);
+
+                this.emit(event.name, args);
+            }
+
+            switch (commandProject) {
+                case Constants.ARCOMMANDS_ID_PROJECT_COMMON:
+                    switch (commandClass) {
+                        case Constants.ARCOMMANDS_ID_COMMON_CLASS_COMMONSTATE:
+                            switch (commandId) {
+                                case Constants.ARCOMMANDS_ID_COMMON_COMMONSTATE_CMD_BATTERYSTATECHANGED:
+                                    this.navData.battery = networkFrame.data.readUInt8(4);
+
+                                    this.emit('battery', this.navData.battery);
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+                case Constants.ARCOMMANDS_ID_PROJECT_ARDRONE3:
+                    switch (commandClass) {
+                        case Constants.ARCOMMANDS_ID_ARDRONE3_CLASS_PILOTINGSTATE:
+                            switch (commandId) {
+                                case Constants.ARCOMMANDS_ID_ARDRONE3_PILOTINGSTATE_CMD_FLATTRIMCHANGED:
+                                    break;
+                                case Constants.ARCOMMANDS_ID_ARDRONE3_PILOTINGSTATE_CMD_FLYINGSTATECHANGED:
+                                    switch (networkFrame.data.readInt32LE(4)) {
+                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDED:
+                                            this.navData.flyingState = ParrotDiscoFlyingState.LANDED;
+
+                                            this.emit('landed');
+
+                                            break;
+                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_TAKINGOFF:
+                                            this.navData.flyingState = ParrotDiscoFlyingState.TAKING_OFF;
+
+                                            this.emit('takingOff');
+
+                                            break;
+                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_HOVERING:
+                                            this.navData.flyingState = ParrotDiscoFlyingState.HOVERING;
+
+                                            this.emit('hovering');
+
+                                            break;
+                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_FLYING:
+                                            this.navData.flyingState = ParrotDiscoFlyingState.FLYING;
+
+                                            this.emit('flying');
+
+                                            break;
+                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDING:
+                                            this.navData.flyingState = ParrotDiscoFlyingState.LANDING;
+
+                                            this.emit('landing');
+
+                                            break;
+                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_EMERGENCY:
+                                            this.navData.flyingState = ParrotDiscoFlyingState.EMERGENCY;
+
+                                            this.emit('emergency');
+
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+            }
         }
     }
 
@@ -120,8 +251,18 @@ export default class ParrotDisco extends EventEmitter {
         );
     }
 
+    private sendAck(networkFrame: ParrotDiscoNetworkFrame) {
+        const buffer = Buffer.alloc(1);
+
+        buffer.writeUInt8(networkFrame.seq, 0);
+
+        const id = networkFrame.id + Constants.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
+
+        this.sendPacket(this.networkFrameGenerator(buffer, Constants.ARNETWORKAL_FRAME_TYPE_ACK, id));
+    }
+
     public sendCommand(command: any[]) {
-        const buffer = commandToBuffer(command[0], command[1], command[2], command[3]);
+        const buffer = commandToBuffer(command[0], command[1], command[2], command[3], command[4]);
 
         this.sendPacket(this.networkFrameGenerator(buffer));
     }

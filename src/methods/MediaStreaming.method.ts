@@ -7,11 +7,11 @@ export default class MediaStreaming {
         this.instance.sendCommand([1, 'MediaStreaming', 'VideoEnable', value]);
     }
 
-    enableVideoStream() {
+    public enableVideoStream() {
         this.setVideoStream(1);
     }
 
-    disableVideoStream() {
+    public disableVideoStream() {
         this.setVideoStream(0);
     }
 }
