@@ -19,6 +19,10 @@ describe(`Basic tests`, () => {
         await new Promise((resolve) => drone.once('unknown', resolve));
     });
 
+    it(`Enable video stream`, async () => {
+        await drone.MediaStreaming.enableVideoStream();
+    });
+
     it(`Move camera`, async () => {
         await drone.Camera.move(0, 0);
     });
