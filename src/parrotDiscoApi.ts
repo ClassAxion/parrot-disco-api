@@ -145,7 +145,7 @@ export default class ParrotDisco extends EventEmitter {
             } catch (err) {
                 this.emit('unknown', networkFrame.data);
 
-                console.debug(`Got unknown frame`, networkFrame);
+                //console.debug(`Got unknown frame`, networkFrame);
             }
 
             if (event) {
@@ -155,7 +155,7 @@ export default class ParrotDisco extends EventEmitter {
                     if (!event) {
                         this.emit('unknown', networkFrame.data);
 
-                        console.debug(`Got unknown frame`, networkFrame);
+                        //console.debug(`Got unknown frame`, networkFrame);
 
                         return;
                     }
@@ -177,7 +177,7 @@ export default class ParrotDisco extends EventEmitter {
                     }
                 }
 
-                console.log(`Got`, event.name, args);
+                //console.log(`Got`, event.name, args);
 
                 this.emit(event.name, args);
             }
