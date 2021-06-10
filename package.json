@@ -6,7 +6,7 @@
     "types": "build/parrotDisocApi.d.ts",
     "scripts": {
         "prepare": "npm run build",
-        "test": "npx mocha --package package.json",
+        "test": "mocha --package package.json",
         "build": "npx tsc",
         "format": "prettier --write \"src/*.ts\"",
         "lint": "tslint -p tsconfig.json",
