@@ -2,8 +2,8 @@
     "name": "parrot-disco-api",
     "version": "1.0.0",
     "description": "",
-    "main": "build/parrotDisocApi.js",
-    "types": "build/parrotDisocApi.d.ts",
+    "main": "build/parrotDiscoApi.js",
+    "types": "build/parrotDiscoApi.d.ts",
     "scripts": {
         "prepare": "npm run build",
         "test": "mocha --package package.json",
