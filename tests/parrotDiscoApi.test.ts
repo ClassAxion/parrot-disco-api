@@ -22,4 +22,8 @@ describe(`Basic tests`, () => {
     it(`Move camera`, async () => {
         await drone.Camera.move(0, 0);
     });
+
+    it(`Disconnect`, () => {
+        drone.disconnect();
+    });
 });
