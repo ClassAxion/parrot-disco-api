@@ -14,8 +14,8 @@ import types from './utils/types.util';
 import networkFrameParser from './utils/networkFrameParser.util';
 import commandToBuffer from './utils/commandToBuffer.util';
 
-import MediaStreaming from 'methods/MediaStreaming.method';
-import Camera from 'methods/Camera.methods';
+import MediaStreaming from './methods/MediaStreaming.method';
+import Camera from './methods/Camera.method';
 
 const Commands = require('./statics/commands.static.json');
 
