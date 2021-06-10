@@ -336,7 +336,7 @@ export default class ParrotDisco extends EventEmitter {
         if (!discovered) return false;
 
         this.sockets.d2c.bind(this.config.d2cPort);
-        this.sockets.d2c.on('message', this.onPacket.bind(this));
+        this.sockets.d2c.on('message', this.onPacket);
 
         this.startPacketSending();
         this.startAliveChecking();
