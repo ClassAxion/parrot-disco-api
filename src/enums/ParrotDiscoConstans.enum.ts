@@ -1,4 +1,4 @@
-export enum Constants {
+export enum ParrotDiscoConstans {
     ARNETWORKAL_MANAGER_DEFAULT_ID_MAX = 256,
 
     BD_NET_CD_NONACK_ID = 10,

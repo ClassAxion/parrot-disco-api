@@ -6,8 +6,8 @@ import ParrotDiscoConfig from './interfaces/ParrotDiscoConfig.interface';
 import ParrotDiscoSockets from './interfaces/ParrotDiscoSockets.interface';
 import ParrotDiscoNetworkFrame from 'interfaces/ParrotDiscoNetworkFrame.interface';
 
-import { Constants } from './enums/constants.enum';
-import { ParrotDiscoFlyingState } from './enums/flyingState.enum';
+import { ParrotDiscoConstans } from './enums/ParrotDiscoConstans.enum';
+import { ParrotDiscoFlyingState } from './enums/ParrotDiscoFlyingState.enum';
 
 import NetworkFrameGenerator from './utils/networkFrameGenerator.util';
 import types from './utils/types.util';
@@ -107,13 +107,13 @@ export default class ParrotDisco extends EventEmitter {
     private onPacket(message) {
         const networkFrame: ParrotDiscoNetworkFrame = networkFrameParser(message);
 
-        if (networkFrame.type === Constants.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK) {
+        if (networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK) {
             this.sendAck(networkFrame);
 
             //console.debug(`Sent back ACK..`);
         }
 
-        if (networkFrame.id === Constants.ARNETWORK_MANAGER_INTERNAL_BUFFER_ID_PING) {
+        if (networkFrame.id === ParrotDiscoConstans.ARNETWORK_MANAGER_INTERNAL_BUFFER_ID_PING) {
             this.navData.flyingTime =
                 networkFrame.data.readUInt32LE(0) + networkFrame.data.readUInt32LE(4) / 1000000000.0;
 
@@ -122,7 +122,10 @@ export default class ParrotDisco extends EventEmitter {
             //console.debug(`Sent back Pong..`);
         }
 
-        if (networkFrame.id === Constants.BD_NET_DC_EVENT_ID || networkFrame.id === Constants.BD_NET_DC_NAVDATA_ID) {
+        if (
+            networkFrame.id === ParrotDiscoConstans.BD_NET_DC_EVENT_ID ||
+            networkFrame.id === ParrotDiscoConstans.BD_NET_DC_NAVDATA_ID
+        ) {
             const commandProject = networkFrame.data.readUInt8(0),
                 commandClass = networkFrame.data.readUInt8(1),
                 commandId = networkFrame.data.readUInt16LE(2);
@@ -174,11 +177,11 @@ export default class ParrotDisco extends EventEmitter {
             }
 
             switch (commandProject) {
-                case Constants.ARCOMMANDS_ID_PROJECT_COMMON:
+                case ParrotDiscoConstans.ARCOMMANDS_ID_PROJECT_COMMON:
                     switch (commandClass) {
-                        case Constants.ARCOMMANDS_ID_COMMON_CLASS_COMMONSTATE:
+                        case ParrotDiscoConstans.ARCOMMANDS_ID_COMMON_CLASS_COMMONSTATE:
                             switch (commandId) {
-                                case Constants.ARCOMMANDS_ID_COMMON_COMMONSTATE_CMD_BATTERYSTATECHANGED:
+                                case ParrotDiscoConstans.ARCOMMANDS_ID_COMMON_COMMONSTATE_CMD_BATTERYSTATECHANGED:
                                     this.navData.battery = networkFrame.data.readUInt8(4);
 
                                     this.emit('battery', this.navData.battery);
@@ -187,45 +190,45 @@ export default class ParrotDisco extends EventEmitter {
                             break;
                     }
                     break;
-                case Constants.ARCOMMANDS_ID_PROJECT_ARDRONE3:
+                case ParrotDiscoConstans.ARCOMMANDS_ID_PROJECT_ARDRONE3:
                     switch (commandClass) {
-                        case Constants.ARCOMMANDS_ID_ARDRONE3_CLASS_PILOTINGSTATE:
+                        case ParrotDiscoConstans.ARCOMMANDS_ID_ARDRONE3_CLASS_PILOTINGSTATE:
                             switch (commandId) {
-                                case Constants.ARCOMMANDS_ID_ARDRONE3_PILOTINGSTATE_CMD_FLATTRIMCHANGED:
+                                case ParrotDiscoConstans.ARCOMMANDS_ID_ARDRONE3_PILOTINGSTATE_CMD_FLATTRIMCHANGED:
                                     break;
-                                case Constants.ARCOMMANDS_ID_ARDRONE3_PILOTINGSTATE_CMD_FLYINGSTATECHANGED:
+                                case ParrotDiscoConstans.ARCOMMANDS_ID_ARDRONE3_PILOTINGSTATE_CMD_FLYINGSTATECHANGED:
                                     switch (networkFrame.data.readInt32LE(4)) {
-                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDED:
+                                        case ParrotDiscoConstans.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDED:
                                             this.navData.flyingState = ParrotDiscoFlyingState.LANDED;
 
                                             this.emit('landed');
 
                                             break;
-                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_TAKINGOFF:
+                                        case ParrotDiscoConstans.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_TAKINGOFF:
                                             this.navData.flyingState = ParrotDiscoFlyingState.TAKING_OFF;
 
                                             this.emit('takingOff');
 
                                             break;
-                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_HOVERING:
+                                        case ParrotDiscoConstans.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_HOVERING:
                                             this.navData.flyingState = ParrotDiscoFlyingState.HOVERING;
 
                                             this.emit('hovering');
 
                                             break;
-                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_FLYING:
+                                        case ParrotDiscoConstans.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_FLYING:
                                             this.navData.flyingState = ParrotDiscoFlyingState.FLYING;
 
                                             this.emit('flying');
 
                                             break;
-                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDING:
+                                        case ParrotDiscoConstans.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDING:
                                             this.navData.flyingState = ParrotDiscoFlyingState.LANDING;
 
                                             this.emit('landing');
 
                                             break;
-                                        case Constants.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_EMERGENCY:
+                                        case ParrotDiscoConstans.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_EMERGENCY:
                                             this.navData.flyingState = ParrotDiscoFlyingState.EMERGENCY;
 
                                             this.emit('emergency');
@@ -245,8 +248,8 @@ export default class ParrotDisco extends EventEmitter {
         this.sendPacket(
             this.networkFrameGenerator(
                 data,
-                Constants.ARNETWORKAL_FRAME_TYPE_DATA,
-                Constants.ARNETWORK_MANAGER_INTERNAL_BUFFER_ID_PONG,
+                ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA,
+                ParrotDiscoConstans.ARNETWORK_MANAGER_INTERNAL_BUFFER_ID_PONG,
             ),
         );
     }
@@ -256,9 +259,9 @@ export default class ParrotDisco extends EventEmitter {
 
         buffer.writeUInt8(networkFrame.seq, 0);
 
-        const id = networkFrame.id + Constants.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
+        const id = networkFrame.id + ParrotDiscoConstans.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
 
-        this.sendPacket(this.networkFrameGenerator(buffer, Constants.ARNETWORKAL_FRAME_TYPE_ACK, id));
+        this.sendPacket(this.networkFrameGenerator(buffer, ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK, id));
     }
 
     public sendCommand(command: any[]) {
@@ -278,9 +281,9 @@ export default class ParrotDisco extends EventEmitter {
     private sendPilotingData() {
         const buffer = Buffer.alloc(13);
 
-        buffer.writeUInt8(Constants.ARCOMMANDS_ID_PROJECT_ARDRONE3, 0);
-        buffer.writeUInt8(Constants.ARCOMMANDS_ID_ARDRONE3_CLASS_PILOTING, 1);
-        buffer.writeUInt16LE(Constants.ARCOMMANDS_ID_ARDRONE3_PILOTING_CMD_PCMD, 2);
+        buffer.writeUInt8(ParrotDiscoConstans.ARCOMMANDS_ID_PROJECT_ARDRONE3, 0);
+        buffer.writeUInt8(ParrotDiscoConstans.ARCOMMANDS_ID_ARDRONE3_CLASS_PILOTING, 1);
+        buffer.writeUInt16LE(ParrotDiscoConstans.ARCOMMANDS_ID_ARDRONE3_PILOTING_CMD_PCMD, 2);
         buffer.writeUInt8(this.pilotingData.flag || 0, 4);
         buffer.writeInt8(this.pilotingData.roll || 0, 5);
         buffer.writeInt8(this.pilotingData.pitch || 0, 6);
@@ -292,9 +295,11 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     private startPacketSending(speed: number = 25) {
+        const self = this;
+
         this.packetSendingInterval = setInterval(
             function () {
-                this.sendPilotingData();
+                self.sendPilotingData();
             }.bind(this),
             speed,
         );
@@ -307,9 +312,9 @@ export default class ParrotDisco extends EventEmitter {
     private sendAllStates() {
         const buffer = Buffer.alloc(4);
 
-        buffer.writeUInt8(Constants.ARCOMMANDS_ID_PROJECT_COMMON, 0);
-        buffer.writeUInt8(Constants.ARCOMMANDS_ID_COMMON_CLASS_COMMON, 1);
-        buffer.writeUInt16LE(Constants.ARCOMMANDS_ID_COMMON_COMMON_CMD_ALLSTATES, 2);
+        buffer.writeUInt8(ParrotDiscoConstans.ARCOMMANDS_ID_PROJECT_COMMON, 0);
+        buffer.writeUInt8(ParrotDiscoConstans.ARCOMMANDS_ID_COMMON_CLASS_COMMON, 1);
+        buffer.writeUInt16LE(ParrotDiscoConstans.ARCOMMANDS_ID_COMMON_COMMON_CMD_ALLSTATES, 2);
 
         this.sendPacket(this.networkFrameGenerator(buffer));
     }
@@ -327,6 +332,14 @@ export default class ParrotDisco extends EventEmitter {
         this.sendAllStates();
 
         this.initializeMethods();
+
+        return true;
+    }
+
+    disconnect(): boolean {
+        this.stopPacketSending();
+        this.sockets.c2d.close();
+        this.sockets.d2c.close();
 
         return true;
     }

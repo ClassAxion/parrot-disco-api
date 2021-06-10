@@ -1,4 +1,4 @@
-import { Constants } from '../enums/constants.enum';
+import { ParrotDiscoConstans } from '../enums/ParrotDiscoConstans.enum';
 
 export default function networkFrameGenerator(): Function {
     const seq = [];
@@ -7,8 +7,8 @@ export default function networkFrameGenerator(): Function {
         const hlen = 7,
             buf = Buffer.alloc(hlen);
 
-        type = type || Constants.ARNETWORKAL_FRAME_TYPE_DATA;
-        id = id || Constants.BD_NET_CD_NONACK_ID;
+        type = type || ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA;
+        id = id || ParrotDiscoConstans.BD_NET_CD_NONACK_ID;
 
         if (!seq[id]) {
             seq[id] = 0;
