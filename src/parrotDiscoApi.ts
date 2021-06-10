@@ -21,8 +21,15 @@ const Commands = require('./statics/commands.static.json');
 
 export default class ParrotDisco extends EventEmitter {
     private sockets: ParrotDiscoSockets;
+
     private packetSendingInterval: NodeJS.Timeout;
+    private aliveCheckingInterval: NodeJS.Timeout;
+
+    private lastPacketReceivedAt: Date;
+    private connectionTimeout = 3000;
+
     public networkFrameGenerator: Function = NetworkFrameGenerator();
+
     private pilotingData: { flag?: number; roll?: number; pitch?: number; yaw?: number; gaz?: number; psi?: number } =
         {};
     private navData: { flyingTime?: number; battery?: number; flyingState?: ParrotDiscoFlyingState } = {};
@@ -59,41 +66,34 @@ export default class ParrotDisco extends EventEmitter {
     private async discover(): Promise<boolean> {
         this.sockets.discovery.setTimeout(this.config.discoveryTimeout);
 
-        const self = this;
-
-        this.sockets.discovery.connect(
-            this.config.discoveryPort,
-            this.config.ip,
-            function () {
-                self.sockets.discovery.write(
-                    JSON.stringify({
-                        controller_type: 'Skycontroller 2 Dummy',
-                        controller_name: 'Parrot-Disco-API-V1-0',
-                        d2c_port: this.config.d2cPort,
-                        arstream2_client_stream_port: this.config.streamVideoPort,
-                        arstream2_client_control_port: this.config.streamControlPort,
-                        arstream2_supported_metadata_version: 1,
-                        qos_mode: 1,
-                    }),
-                );
-            }.bind(this),
-        );
+        this.sockets.discovery.connect(this.config.discoveryPort, this.config.ip, () => {
+            this.sockets.discovery.write(
+                JSON.stringify({
+                    controller_type: 'Skycontroller 2 Dummy',
+                    controller_name: 'Parrot-Disco-API-V1-0',
+                    d2c_port: this.config.d2cPort,
+                    arstream2_client_stream_port: this.config.streamVideoPort,
+                    arstream2_client_control_port: this.config.streamControlPort,
+                    arstream2_supported_metadata_version: 1,
+                    qos_mode: 1,
+                }),
+            );
+        });
 
         return new Promise((callback) => {
-            this.sockets.discovery.once('timeout', function () {
-                self.sockets.discovery.destroy();
+            this.sockets.discovery.once('timeout', () => {
+                this.sockets.discovery.destroy();
 
                 callback(false);
             });
 
-            this.sockets.discovery.on(
-                'data',
-                function () {
-                    self.sockets.discovery.destroy();
+            this.sockets.discovery.on('data', () => {
+                this.sockets.discovery.destroy();
 
-                    callback(true);
-                }.bind(this),
-            );
+                callback(true);
+
+                this.emit('connected');
+            });
         });
     }
 
@@ -104,7 +104,13 @@ export default class ParrotDisco extends EventEmitter {
         this.createSockets();
     }
 
+    public isAlive(): boolean {
+        return Date.now() - this.lastPacketReceivedAt.getTime() > this.connectionTimeout;
+    }
+
     private onPacket(message) {
+        this.lastPacketReceivedAt = new Date();
+
         const networkFrame: ParrotDiscoNetworkFrame = networkFrameParser(message);
 
         if (networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK) {
@@ -157,7 +163,7 @@ export default class ParrotDisco extends EventEmitter {
 
                 if (typeof event.arg !== 'undefined') {
                     if (event.arg instanceof Array) {
-                        event.arg.forEach(function (arg) {
+                        event.arg.forEach((arg) => {
                             if (types.hasOwnProperty(arg.type)) {
                                 args[arg.name] = types[arg.type].read(networkFrame.data, offset, arg);
 
@@ -271,7 +277,7 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     public sendPacket(packet) {
-        this.sockets.c2d.send(packet, 0, packet.length, this.config.c2dPort, this.config.ip, function (err) {
+        this.sockets.c2d.send(packet, 0, packet.length, this.config.c2dPort, this.config.ip, (err) => {
             if (err) {
                 throw err;
             }
@@ -295,18 +301,23 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     private startPacketSending(speed: number = 25) {
-        const self = this;
-
-        this.packetSendingInterval = setInterval(
-            function () {
-                self.sendPilotingData();
-            }.bind(this),
-            speed,
-        );
+        this.packetSendingInterval = setInterval(() => {
+            this.sendPilotingData();
+        }, speed);
     }
 
     private stopPacketSending() {
         clearInterval(this.packetSendingInterval);
+    }
+
+    private startAliveChecking(speed: number = 2000) {
+        this.aliveCheckingInterval = setInterval(() => {
+            if (!this.isAlive()) this.emit('disconnected');
+        }, speed);
+    }
+
+    private stopAliveChecking() {
+        clearInterval(this.aliveCheckingInterval);
     }
 
     private sendAllStates() {
@@ -328,6 +339,7 @@ export default class ParrotDisco extends EventEmitter {
         this.sockets.d2c.on('message', this.onPacket.bind(this));
 
         this.startPacketSending();
+        this.startAliveChecking();
 
         this.sendAllStates();
 
@@ -338,6 +350,8 @@ export default class ParrotDisco extends EventEmitter {
 
     disconnect(): boolean {
         this.stopPacketSending();
+        this.stopAliveChecking();
+
         this.sockets.c2d.close();
         this.sockets.d2c.close();
 
