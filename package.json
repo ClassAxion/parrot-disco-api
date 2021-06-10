@@ -5,7 +5,7 @@
     "main": "build/parrotDiscoApi.js",
     "types": "build/parrotDiscoApi.d.ts",
     "scripts": {
-        "prepare": "npm run build",
+        "prepare": "npm run build && cp -R src/statics build/",
         "test": "mocha --package package.json",
         "build": "npx tsc",
         "format": "prettier --write \"src/*.ts\"",
