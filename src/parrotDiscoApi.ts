@@ -245,6 +245,9 @@ export default class ParrotDisco extends EventEmitter {
 
                                             break;
                                     }
+
+                                    this.emit('flyingState', { flyingState: this.navData.flyingState });
+
                                     break;
                             }
                             break;
