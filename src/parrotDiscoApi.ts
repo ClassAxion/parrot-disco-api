@@ -32,7 +32,7 @@ export default class ParrotDisco extends EventEmitter {
 
     private pilotingData: { flag?: number; roll?: number; pitch?: number; yaw?: number; gaz?: number; psi?: number } =
         {};
-    private navData: { flyingTime?: number; battery?: number; flyingState?: ParrotDiscoFlyingState } = {};
+    public navData: { flyingTime?: number; battery?: number; flyingState?: ParrotDiscoFlyingState } = {};
 
     public MediaStreaming: MediaStreaming;
     public Camera: Camera;
