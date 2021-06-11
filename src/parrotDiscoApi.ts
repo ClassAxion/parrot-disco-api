@@ -48,6 +48,8 @@ export default class ParrotDisco extends EventEmitter {
 
         this.config.streamControlPort = this.config.streamControlPort || 55005;
         this.config.streamVideoPort = this.config.streamVideoPort || 55004;
+
+        this.config.debug = this.config.debug || false;
     }
 
     private createSockets(): void {
@@ -178,6 +180,10 @@ export default class ParrotDisco extends EventEmitter {
                 }
 
                 this.emit(event.name, args);
+
+                if (this.config.debug) {
+                    console.log(`Got`, event.name, JSON.stringify(args));
+                }
             }
 
             switch (commandProject) {

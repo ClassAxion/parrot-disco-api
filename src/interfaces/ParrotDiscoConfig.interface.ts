@@ -6,4 +6,5 @@ export default interface ParrotDiscoConfig {
     discoveryTimeout?: number;
     streamVideoPort?: number;
     streamControlPort?: number;
+    debug?: boolean;
 }
