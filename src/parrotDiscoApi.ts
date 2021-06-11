@@ -177,8 +177,6 @@ export default class ParrotDisco extends EventEmitter {
                     }
                 }
 
-                //console.log(`Got`, event.name, args);
-
                 this.emit(event.name, args);
             }
 
@@ -272,8 +270,6 @@ export default class ParrotDisco extends EventEmitter {
 
     public sendCommand(command: any[]) {
         const buffer = commandToBuffer(command[0], command[1], command[2], command[3], command[4]);
-
-        console.log(buffer);
 
         this.sendPacket(this.networkFrameGenerator(buffer));
     }

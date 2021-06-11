@@ -40,8 +40,6 @@ export function parseCommand() {
 
     let offset = 3;
 
-    console.log(command.arg);
-
     if (command.arg && args.length > 3) {
         const extraArgs = [].concat(command.arg);
 
