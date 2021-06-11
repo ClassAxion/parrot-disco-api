@@ -16,6 +16,7 @@ import commandToBuffer from './utils/commandToBuffer.util';
 
 import MediaStreaming from './methods/MediaStreaming.method';
 import Camera from './methods/Camera.method';
+import Piloting from './methods/Piloting.method';
 
 const Commands = require('./statics/commands.static.json');
 
@@ -36,6 +37,7 @@ export default class ParrotDisco extends EventEmitter {
 
     public MediaStreaming: MediaStreaming;
     public Camera: Camera;
+    public Piloting: Piloting;
 
     private defaultConfig(): void {
         this.config.ip = this.config.ip || '192.168.42.1';
@@ -63,6 +65,7 @@ export default class ParrotDisco extends EventEmitter {
     private initializeMethods() {
         this.MediaStreaming = new MediaStreaming(this);
         this.Camera = new Camera(this);
+        this.Piloting = new Piloting(this);
     }
 
     private async discover(): Promise<boolean> {
