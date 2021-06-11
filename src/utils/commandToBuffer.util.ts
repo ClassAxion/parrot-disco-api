@@ -43,7 +43,9 @@ export function parseCommand() {
     console.log(command.arg);
 
     if (command.arg && args.length > 3) {
-        for (const arg of command.arg) {
+        const extraArgs = [].concat(command.arg);
+
+        for (const arg of extraArgs) {
             returnArgs.push({ value: args[offset], type: arg.type });
             offset++;
         }
