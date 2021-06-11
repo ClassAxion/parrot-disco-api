@@ -40,6 +40,8 @@ export function parseCommand() {
 
     let offset = 3;
 
+    console.log(command.arg);
+
     if (command.arg && args.length > 3) {
         for (const arg of command.arg) {
             returnArgs.push({ value: args[offset], type: arg.type });
