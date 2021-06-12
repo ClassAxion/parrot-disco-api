@@ -110,7 +110,9 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     public isAlive(): boolean {
-        return Date.now() - this.lastPacketReceivedAt.getTime() > this.connectionTimeout;
+        return !this.lastPacketReceivedAt
+            ? true
+            : Date.now() - this.lastPacketReceivedAt.getTime() > this.connectionTimeout;
     }
 
     private onPacket(message) {
