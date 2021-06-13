@@ -18,6 +18,7 @@ import MediaStreaming from './methods/MediaStreaming.method';
 import Camera from './methods/Camera.method';
 import Piloting from './methods/Piloting.method';
 import Mavlink from './methods/Mavlink.method';
+import GPSSettings from './methods/GPSSettings.method';
 
 const Commands = require('./statics/commands.static.json');
 
@@ -40,6 +41,7 @@ export default class ParrotDisco extends EventEmitter {
     public Camera: Camera;
     public Piloting: Piloting;
     public Mavlink: Mavlink;
+    public GPSSettings: GPSSettings;
 
     private defaultConfig(): void {
         this.config.ip = this.config.ip || '192.168.42.1';
@@ -69,6 +71,7 @@ export default class ParrotDisco extends EventEmitter {
         this.Camera = new Camera(this);
         this.Piloting = new Piloting(this);
         this.Mavlink = new Mavlink(this);
+        this.GPSSettings = new GPSSettings(this);
     }
 
     private async discover(): Promise<boolean> {
