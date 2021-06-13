@@ -348,10 +348,20 @@ export default class ParrotDisco extends EventEmitter {
         this.sendPacket(this.networkFrameGenerator(buffer));
     }
 
-    async connect(): Promise<boolean> {
-        const discovered = await this.discover();
+    async connect(waitForDisco: boolean = false): Promise<boolean> {
+        while (true) {
+            const discovered = await this.discover();
 
-        if (!discovered) return false;
+            if (!discovered) {
+                if (waitForDisco) {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+
+            break;
+        }
 
         this.sockets.d2c.bind(this.config.d2cPort);
         this.sockets.d2c.on('message', this.onPacket.bind(this));
