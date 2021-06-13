@@ -328,13 +328,13 @@ export default class ParrotDisco extends EventEmitter {
         clearInterval(this.packetSendingInterval);
     }
 
-    private startAliveChecking(speed: number = 2000) {
+    public startAliveChecking(speed: number = 5000) {
         this.aliveCheckingInterval = setInterval(() => {
             if (!this.isAlive()) this.emit('disconnected');
         }, speed);
     }
 
-    private stopAliveChecking() {
+    public stopAliveChecking() {
         clearInterval(this.aliveCheckingInterval);
     }
 
