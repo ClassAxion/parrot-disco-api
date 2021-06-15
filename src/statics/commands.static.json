@@ -176,22 +176,56 @@
             {
                 "name": "Camera",
                 "id": "1",
-                "cmd": {
-                    "name": "Orientation",
-                    "id": "0",
-                    "arg": [
-                        {
-                            "name": "tilt",
-                            "type": "i8",
-                            "$t": "Tilt camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
-                        },
-                        {
-                            "name": "pan",
-                            "type": "i8",
-                            "$t": "Pan camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
-                        }
-                    ]
-                }
+                "cmd": [
+                    {
+                        "name": "Orientation",
+                        "id": "0",
+                        "arg": [
+                            {
+                                "name": "tilt",
+                                "type": "i8",
+                                "$t": "Tilt camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
+                            },
+                            {
+                                "name": "pan",
+                                "type": "i8",
+                                "$t": "Pan camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
+                            }
+                        ]
+                    },
+                    {
+                        "name": "OrientationV2",
+                        "id": "1",
+                        "arg": [
+                            {
+                                "name": "tilt",
+                                "type": "i8",
+                                "$t": "Tilt camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
+                            },
+                            {
+                                "name": "pan",
+                                "type": "i8",
+                                "$t": "Pan camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Velocity",
+                        "id": "2",
+                        "arg": [
+                            {
+                                "name": "tilt",
+                                "type": "i8",
+                                "$t": "Tilt camera consign for the drone &#40;in deg/s&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
+                            },
+                            {
+                                "name": "pan",
+                                "type": "i8",
+                                "$t": "Pan camera consign for the drone &#40;in deg/s&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "name": "MediaRecord",
@@ -2503,6 +2537,54 @@
                                 "name": "pan",
                                 "type": "i8",
                                 "$t": "Pan value &#40;in degree&#41;"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "OrientationV2",
+                        "id": "2",
+                        "arg": [
+                            {
+                                "name": "tilt",
+                                "type": "i8",
+                                "$t": "Tilt camera consign for the drone [-100;100]"
+                            },
+                            {
+                                "name": "pan",
+                                "type": "i8",
+                                "$t": "Pan camera consign for the drone [-100;100]"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "defaultCameraOrientationV2",
+                        "id": "3",
+                        "arg": [
+                            {
+                                "name": "tilt",
+                                "type": "i8",
+                                "$t": "Tilt value &#40;in degree&#41;"
+                            },
+                            {
+                                "name": "pan",
+                                "type": "i8",
+                                "$t": "Pan value &#40;in degree&#41;"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "VelocityRange",
+                        "id": "4",
+                        "arg": [
+                            {
+                                "name": "max_tilt",
+                                "type": "i8",
+                                "$t": "Absolute max tilt velocity [deg/s]"
+                            },
+                            {
+                                "name": "max_pan",
+                                "type": "i8",
+                                "$t": "Absolute max pan velocity [deg/s]"
                             }
                         ]
                     }
