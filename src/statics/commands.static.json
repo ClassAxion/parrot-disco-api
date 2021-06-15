@@ -199,12 +199,12 @@
                         "arg": [
                             {
                                 "name": "tilt",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Tilt camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
                             },
                             {
                                 "name": "pan",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Pan camera consign for the drone &#40;in degree&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
                             }
                         ]
@@ -215,12 +215,12 @@
                         "arg": [
                             {
                                 "name": "tilt",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Tilt camera consign for the drone &#40;in deg/s&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
                             },
                             {
                                 "name": "pan",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Pan camera consign for the drone &#40;in deg/s&#41;\n                The value is saturated by the drone.\n                Saturation value is sent by thre drone through CameraSettingsChanged command."
                             }
                         ]
@@ -2562,12 +2562,12 @@
                         "arg": [
                             {
                                 "name": "tilt",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Tilt value &#40;in degree&#41;"
                             },
                             {
                                 "name": "pan",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Pan value &#40;in degree&#41;"
                             }
                         ]
@@ -2578,12 +2578,12 @@
                         "arg": [
                             {
                                 "name": "max_tilt",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Absolute max tilt velocity [deg/s]"
                             },
                             {
                                 "name": "max_pan",
-                                "type": "i8",
+                                "type": "float",
                                 "$t": "Absolute max pan velocity [deg/s]"
                             }
                         ]
