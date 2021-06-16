@@ -29,11 +29,11 @@ export default class ParrotDisco extends EventEmitter {
     private aliveCheckingInterval: NodeJS.Timeout;
 
     private lastPacketReceivedAt: Date;
-    private connectionTimeout = 3000;
+    private connectionTimeout = 5000;
 
     public networkFrameGenerator: Function = NetworkFrameGenerator();
 
-    private pilotingData: { flag?: number; roll?: number; pitch?: number; yaw?: number; gaz?: number; psi?: number } =
+    public pilotingData: { flag?: number; roll?: number; pitch?: number; yaw?: number; gaz?: number; psi?: number } =
         {};
     public navData: { flyingTime?: number; battery?: number; flyingState?: ParrotDiscoFlyingState } = {};
 
@@ -328,7 +328,7 @@ export default class ParrotDisco extends EventEmitter {
         clearInterval(this.packetSendingInterval);
     }
 
-    public startAliveChecking(speed: number = 5000) {
+    public startAliveChecking(speed: number = 2000) {
         this.aliveCheckingInterval = setInterval(() => {
             if (!this.isAlive()) this.emit('disconnected');
         }, speed);

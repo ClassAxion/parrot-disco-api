@@ -12,10 +12,26 @@ export default class Piloting {
     }
 
     public userTakeOff() {
-        return this.setUserTakeOff(1);
+        this.setUserTakeOff(1);
     }
 
     public cancelUserTakeOff() {
-        return this.setUserTakeOff(0);
+        this.setUserTakeOff(0);
+    }
+
+    public circle(direction: string) {
+        this.instance.sendCommand([1, 'Piloting', 'Circle', direction]);
+    }
+
+    private navigateToHome(status: number) {
+        this.instance.sendCommand([1, 'Piloting', 'NavigateHome', status]);
+    }
+
+    public returnToHome() {
+        this.navigateToHome(1);
+    }
+
+    public stopReturnToHome() {
+        this.navigateToHome(0);
     }
 }
