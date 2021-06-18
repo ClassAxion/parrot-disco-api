@@ -106,6 +106,12 @@ export default class ParrotDisco extends EventEmitter {
 
                     callback(true);
                 });
+
+                this.sockets.discovery.once('error', () => {
+                    this.sockets.discovery.destroy();
+
+                    callback(false);
+                });
             });
         } catch {
             this.sockets.discovery.destroy();
