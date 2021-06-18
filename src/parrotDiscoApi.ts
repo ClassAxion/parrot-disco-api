@@ -93,15 +93,13 @@ export default class ParrotDisco extends EventEmitter {
             this.sockets.discovery.setTimeout(this.config.discoveryTimeout);
 
             return new Promise((callback) => {
-                this.sockets.discovery.on('timeout', () => {
-                    console.log(`timeout`);
-
+                this.sockets.discovery.once('timeout', () => {
                     this.sockets.discovery.destroy();
 
                     callback(false);
                 });
 
-                this.sockets.discovery.on('data', () => {
+                this.sockets.discovery.once('data', () => {
                     this.sockets.discovery.destroy();
 
                     this.emit('connected');
