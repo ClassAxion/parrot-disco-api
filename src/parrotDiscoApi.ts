@@ -77,19 +77,25 @@ export default class ParrotDisco extends EventEmitter {
     private async discover(): Promise<boolean> {
         this.sockets.discovery.setTimeout(this.config.discoveryTimeout);
 
-        this.sockets.discovery.connect(this.config.discoveryPort, this.config.ip, () => {
-            this.sockets.discovery.write(
-                JSON.stringify({
-                    controller_type: 'Skycontroller 2 Dummy',
-                    controller_name: 'Parrot-Disco-API-V1-0',
-                    d2c_port: this.config.d2cPort,
-                    arstream2_client_stream_port: this.config.streamVideoPort,
-                    arstream2_client_control_port: this.config.streamControlPort,
-                    arstream2_supported_metadata_version: 1,
-                    qos_mode: 1,
-                }),
-            );
-        });
+        try {
+            this.sockets.discovery.connect(this.config.discoveryPort, this.config.ip, () => {
+                this.sockets.discovery.write(
+                    JSON.stringify({
+                        controller_type: 'Skycontroller 2 Dummy',
+                        controller_name: 'Parrot-Disco-API-V1-0',
+                        d2c_port: this.config.d2cPort,
+                        arstream2_client_stream_port: this.config.streamVideoPort,
+                        arstream2_client_control_port: this.config.streamControlPort,
+                        arstream2_supported_metadata_version: 1,
+                        qos_mode: 1,
+                    }),
+                );
+            });
+        } catch {
+            this.sockets.discovery.destroy();
+
+            return false;
+        }
 
         return new Promise((callback) => {
             this.sockets.discovery.once('timeout', () => {
@@ -328,9 +334,17 @@ export default class ParrotDisco extends EventEmitter {
         clearInterval(this.packetSendingInterval);
     }
 
+    private lastDisconnectedEventAt: number = null;
+
     public startAliveChecking(speed: number = 2000) {
         this.aliveCheckingInterval = setInterval(() => {
-            if (!this.isAlive()) this.emit('disconnected');
+            if (!this.isAlive()) {
+                if (!this.lastDisconnectedEventAt || Date.now() - this.lastDisconnectedEventAt > 3000) {
+                    this.emit('disconnected');
+
+                    this.lastDisconnectedEventAt = Date.now();
+                }
+            }
         }, speed);
     }
 
