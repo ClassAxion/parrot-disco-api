@@ -75,9 +75,9 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     public async discover(): Promise<boolean> {
-        this.sockets.discovery.setTimeout(this.config.discoveryTimeout);
-
         try {
+            this.sockets.discovery.setTimeout(this.config.discoveryTimeout);
+
             this.sockets.discovery.connect(this.config.discoveryPort, this.config.ip, () => {
                 this.sockets.discovery.write(
                     JSON.stringify({
@@ -93,7 +93,9 @@ export default class ParrotDisco extends EventEmitter {
             });
 
             return new Promise((callback) => {
-                this.sockets.discovery.once('timeout', () => {
+                this.sockets.discovery.on('timeout', () => {
+                    console.log(`timeout`);
+
                     this.sockets.discovery.destroy();
 
                     callback(false);
@@ -102,9 +104,9 @@ export default class ParrotDisco extends EventEmitter {
                 this.sockets.discovery.on('data', () => {
                     this.sockets.discovery.destroy();
 
-                    callback(true);
-
                     this.emit('connected');
+
+                    callback(true);
                 });
             });
         } catch {
