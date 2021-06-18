@@ -74,7 +74,7 @@ export default class ParrotDisco extends EventEmitter {
         this.GPSSettings = new GPSSettings(this);
     }
 
-    private async discover(): Promise<boolean> {
+    public async discover(): Promise<boolean> {
         this.sockets.discovery.setTimeout(this.config.discoveryTimeout);
 
         try {
