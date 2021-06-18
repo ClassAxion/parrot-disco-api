@@ -91,27 +91,27 @@ export default class ParrotDisco extends EventEmitter {
                     }),
                 );
             });
+
+            return new Promise((callback) => {
+                this.sockets.discovery.once('timeout', () => {
+                    this.sockets.discovery.destroy();
+
+                    callback(false);
+                });
+
+                this.sockets.discovery.on('data', () => {
+                    this.sockets.discovery.destroy();
+
+                    callback(true);
+
+                    this.emit('connected');
+                });
+            });
         } catch {
             this.sockets.discovery.destroy();
 
             return false;
         }
-
-        return new Promise((callback) => {
-            this.sockets.discovery.once('timeout', () => {
-                this.sockets.discovery.destroy();
-
-                callback(false);
-            });
-
-            this.sockets.discovery.on('data', () => {
-                this.sockets.discovery.destroy();
-
-                callback(true);
-
-                this.emit('connected');
-            });
-        });
     }
 
     constructor(private config: ParrotDiscoConfig = {}) {
