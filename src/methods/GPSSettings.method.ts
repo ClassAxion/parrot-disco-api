@@ -23,4 +23,8 @@ export default class Camera {
             verticalAccuracy,
         ]);
     }
+
+    public resetHome() {
+        this.instance.sendCommand([1, 'GPSSettings', 'ResetHome']);
+    }
 }
