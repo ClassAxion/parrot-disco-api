@@ -70,6 +70,17 @@ export function writeBuffer(command) {
     return buffer;
 }
 
-export default function (_1?: any, _2?: any, _3?: any, _4?: any, _5?: any, _6?: any, _7?: any) {
+export default function (
+    _1?: any,
+    _2?: any,
+    _3?: any,
+    _4?: any,
+    _5?: any,
+    _6?: any,
+    _7?: any,
+    _8?: any,
+    _9?: any,
+    _10?: any,
+) {
     return writeBuffer(parseCommand.apply(null, arguments));
 }
