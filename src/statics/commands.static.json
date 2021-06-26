@@ -3388,6 +3388,15 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "MissonItemExecuted",
+                        "id": "2",
+                        "arg": {
+                            "name": "idx",
+                            "type": "u32",
+                            "$t": "Index of the mission item. This is the place of the mission item in the list of the items of the mission. Begins at 0."
+                        }
                     }
                 ]
             },
