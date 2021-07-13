@@ -186,7 +186,7 @@ export default class ParrotDisco extends EventEmitter {
                     }
                 }
 
-                //if (['moveToChanged'].includes(event.name)) return;
+                if (['moveToChanged'].includes(event.name)) return;
 
                 try {
                     if (typeof event.arg !== 'undefined') {
