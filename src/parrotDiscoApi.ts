@@ -186,14 +186,18 @@ export default class ParrotDisco extends EventEmitter {
                     }
                 }
 
-                if (['moveToChanged'].includes(event.name)) return;
+                //if (['moveToChanged'].includes(event.name)) return;
 
                 try {
                     if (typeof event.arg !== 'undefined') {
                         if (event.arg instanceof Array) {
                             event.arg.forEach((arg) => {
                                 if (types.hasOwnProperty(arg.type)) {
-                                    args[arg.name] = types[arg.type].read(networkFrame.data, offset, arg);
+                                    try {
+                                        args[arg.name] = types[arg.type].read(networkFrame.data, offset, arg);
+                                    } catch (_) {
+                                        console.log(`Parsing ${arg.name} at ${event.name} failed`);
+                                    }
 
                                     offset += types[arg.type].length;
                                 }
