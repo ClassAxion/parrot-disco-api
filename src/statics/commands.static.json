@@ -959,7 +959,7 @@
                         }
                     },
                     {
-                        "name": "",
+                        "name": "AltitudeAboveGroundChanged",
                         "id": "21",
                         "arg": {
                             "name": "altitude",
