@@ -140,6 +140,60 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "moveTo",
+                        "id": "10",
+                        "$t": "Move the drone to a specified location",
+                        "arg": [
+                            {
+                                "name": "latitude",
+                                "type": "double",
+                                "$t": "Latitude of the location (in degrees) to reach"
+                            },
+                            {
+                                "name": "longitude",
+                                "type": "double",
+                                "$t": "Longitude of the location (in degrees) to reach"
+                            },
+                            {
+                                "name": "altitude",
+                                "type": "double",
+                                "$t": "Altitude above take off point (in m) to reach"
+                            },
+                            {
+                                "name": "orientation_mode",
+                                "type": "enum",
+                                "enum": [
+                                    {
+                                        "name": "NONE",
+                                        "$t": "The drone won't change its orientation"
+                                    },
+                                    {
+                                        "name": "TO_TARGET",
+                                        "$t": "The drone will make a rotation to look in direction of the given location"
+                                    },
+                                    {
+                                        "name": "HEADING_START",
+                                        "$t": "The drone will orientate itself to the given heading before moving to the location"
+                                    },
+                                    {
+                                        "name": "HEADING_DURING",
+                                        "$t": "The drone will orientate itself to the given heading while moving to the location"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "heading",
+                                "type": "float",
+                                "$t": "Heading (relative to the North in degrees). This value is only used if the orientation mode is HEADING_START or HEADING_DURING"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "CancelMoveTo",
+                        "id": "11",
+                        "$t": "Cancel the current moveTo"
                     }
                 ]
             },
@@ -782,6 +836,134 @@
                         "arg": {
                             "name": "altitude",
                             "type": "double",
+                            "$t": "Altitude in meters"
+                        }
+                    },
+                    {
+                        "name": "LandingStateChanged",
+                        "id": "10",
+                        "arg": {
+                            "name": "state",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "linear",
+                                    "$t": "Linear landing"
+                                },
+                                {
+                                    "name": "spiral",
+                                    "$t": "Spiral landing"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "AirSpeedChanged",
+                        "id": "11",
+                        "arg": {
+                            "name": "airSpeed",
+                            "type": "float",
+                            "$t": "Speed relative to air on x axis (speed is always > 0) (in m/s)"
+                        }
+                    },
+                    {
+                        "name": "moveToChanged",
+                        "id": "12",
+                        "arg": [
+                            {
+                                "name": "latitude",
+                                "type": "double",
+                                "$t": "Latitude of the location (in degrees) to reach"
+                            },
+                            {
+                                "name": "longitude",
+                                "type": "double",
+                                "$t": "Longitude of the location (in degrees) to reach"
+                            },
+                            {
+                                "name": "altitude",
+                                "type": "double",
+                                "$t": "Altitude above take off point (in m) to reach"
+                            },
+                            {
+                                "name": "orientation_mode",
+                                "type": "enum",
+                                "enum": [
+                                    {
+                                        "name": "NONE",
+                                        "$t": "The drone won't change its orientation"
+                                    },
+                                    {
+                                        "name": "TO_TARGET",
+                                        "$t": "The drone will make a rotation to look in direction of the given location"
+                                    },
+                                    {
+                                        "name": "HEADING_START",
+                                        "$t": "The drone will orientate itself to the given heading before moving to the location"
+                                    },
+                                    {
+                                        "name": "HEADING_DURING",
+                                        "$t": "The drone will orientate itself to the given heading while moving to the location"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "heading",
+                                "type": "float",
+                                "$t": "Heading (relative to the North in degrees). This value is only used if the orientation mode is HEADING_START or HEADING_DURING"
+                            },
+                            {
+                                "name": "status",
+                                "type": "enum",
+                                "enum": [
+                                    {
+                                        "name": "RUNNING",
+                                        "$t": "The drone is actually flying to the given position"
+                                    },
+                                    {
+                                        "name": "DONE",
+                                        "$t": "The drone has reached the target"
+                                    },
+                                    {
+                                        "name": "CANCELED",
+                                        "$t": "The move to has been canceled, either by a CancelMoveTo command or when a disconnection appears."
+                                    },
+                                    {
+                                        "name": "ERROR",
+                                        "$t": "The move to has not been finished or started because of an error."
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "VibrationLevelChanged",
+                        "id": "20",
+                        "arg": {
+                            "name": "state",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "ok",
+                                    "$t": "The level of vibration can be handled properly by the drone."
+                                },
+                                {
+                                    "name": "warning",
+                                    "$t": "The level of vibration begins to be too strong for the drone to fly correctly."
+                                },
+                                {
+                                    "name": "critical",
+                                    "$t": "The level of vibration is too strong for the drone to fly correctly."
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "",
+                        "id": "21",
+                        "arg": {
+                            "name": "altitude",
+                            "type": "float",
                             "$t": "Altitude in meters"
                         }
                     }

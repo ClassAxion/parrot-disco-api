@@ -34,4 +34,12 @@ export default class Piloting {
     public stopReturnToHome() {
         this.navigateToHome(0);
     }
+
+    public moveTo(latitude: number, longitude: number, altitude: number) {
+        this.instance.sendCommand([1, 'Piloting', 'moveTo', latitude, longitude, altitude, 'TO_TARGET', 0]);
+    }
+
+    public cancelMoveTo() {
+        this.instance.sendCommand([1, 'Piloting', 'CancelMoveTo']);
+    }
 }
