@@ -186,26 +186,30 @@ export default class ParrotDisco extends EventEmitter {
                     }
                 }
 
-                if (typeof event.arg !== 'undefined') {
-                    if (event.arg instanceof Array) {
-                        event.arg.forEach((arg) => {
-                            if (types.hasOwnProperty(arg.type)) {
-                                args[arg.name] = types[arg.type].read(networkFrame.data, offset, arg);
+                try {
+                    if (typeof event.arg !== 'undefined') {
+                        if (event.arg instanceof Array) {
+                            event.arg.forEach((arg) => {
+                                if (types.hasOwnProperty(arg.type)) {
+                                    args[arg.name] = types[arg.type].read(networkFrame.data, offset, arg);
 
-                                offset += types[arg.type].length;
+                                    offset += types[arg.type].length;
+                                }
+                            });
+                        } else if (event.arg instanceof Object) {
+                            if (types.hasOwnProperty(event.arg.type)) {
+                                args[event.arg.name] = types[event.arg.type].read(networkFrame.data, offset, event.arg);
                             }
-                        });
-                    } else if (event.arg instanceof Object) {
-                        if (types.hasOwnProperty(event.arg.type)) {
-                            args[event.arg.name] = types[event.arg.type].read(networkFrame.data, offset, event.arg);
                         }
                     }
-                }
 
-                this.emit(event.name, args);
+                    this.emit(event.name, args);
 
-                if (this.config.debug) {
-                    console.log(`Got`, event.name, JSON.stringify(args));
+                    if (this.config.debug) {
+                        console.log(`Got`, event.name, JSON.stringify(args));
+                    }
+                } catch () {
+                    console.error(`Parsing of ${event.name} failed`)
                 }
             }
 
