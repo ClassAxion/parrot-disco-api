@@ -208,8 +208,8 @@ export default class ParrotDisco extends EventEmitter {
                     if (this.config.debug) {
                         console.log(`Got`, event.name, JSON.stringify(args));
                     }
-                } catch () {
-                    console.error(`Parsing of ${event.name} failed`)
+                } catch (_) {
+                    console.error(`Parsing of ${event.name} failed`);
                 }
             }
 
