@@ -2565,6 +2565,10 @@
                                 {
                                     "name": "PILOT",
                                     "$t": "The drone will try to return to the pilot position"
+                                },
+                                {
+                                    "name": "FOLLOWEE",
+                                    "$t": "The drone will try to return to the target of the current (or last) follow me"
                                 }
                             ]
                         }
@@ -2925,6 +2929,10 @@
                                 {
                                     "name": "FIRST_FIX",
                                     "$t": "The drone has not enough information, it will try to return to the first GPS fix"
+                                },
+                                {
+                                    "name": "FOLLOWEE",
+                                    "$t": "In this case, the drone will use the position of the target of the followMe (given by ControllerInfo-GPS)"
                                 }
                             ]
                         }
