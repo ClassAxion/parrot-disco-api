@@ -305,17 +305,6 @@ export default class ParrotDisco extends EventEmitter {
 
     private sendAck(networkFrame: ParrotDiscoNetworkFrame) {
         if (networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK) {
-            const incoming = networkFrame.data.readUInt8(0);
-
-            const buffer = Buffer.alloc(1);
-
-            buffer.writeUInt8(networkFrame.seq, 0);
-
-            const id = networkFrame.id - ParrotDiscoConstans.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
-
-            this.sendPacket(
-                this.networkFrameGenerator(buffer, ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK, incoming),
-            );
         } else {
             const buffer = Buffer.alloc(1);
 
