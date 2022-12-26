@@ -316,7 +316,7 @@ export default class ParrotDisco extends EventEmitter {
         let type: ParrotDiscoConstans = null;
         let id: ParrotDiscoConstans = null;
 
-        if (command[2]) {
+        if (command[2] === 'SendControllerGPS') {
             type = ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK;
             id = ParrotDiscoConstans.BD_NET_CD_ACK_ID;
         }
