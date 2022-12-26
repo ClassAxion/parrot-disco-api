@@ -138,7 +138,10 @@ export default class ParrotDisco extends EventEmitter {
 
         const networkFrame: ParrotDiscoNetworkFrame = networkFrameParser(message);
 
-        if (networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK) {
+        if (
+            networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK ||
+            networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK
+        ) {
             this.sendAck(networkFrame);
 
             //console.debug(`Sent back ACK..`);
