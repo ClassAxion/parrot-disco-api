@@ -304,13 +304,23 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     private sendAck(networkFrame: ParrotDiscoNetworkFrame) {
-        const buffer = Buffer.alloc(1);
+        if (networkFrame.type === ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK) {
+            const buffer = Buffer.alloc(1);
 
-        buffer.writeUInt8(networkFrame.seq, 0);
+            buffer.writeUInt8(networkFrame.seq, 0);
 
-        const id = networkFrame.id + ParrotDiscoConstans.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
+            const id = networkFrame.id - ParrotDiscoConstans.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
 
-        this.sendPacket(this.networkFrameGenerator(buffer, ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK, id));
+            this.sendPacket(this.networkFrameGenerator(buffer, ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK, id));
+        } else {
+            const buffer = Buffer.alloc(1);
+
+            buffer.writeUInt8(networkFrame.seq, 0);
+
+            const id = networkFrame.id + ParrotDiscoConstans.ARNETWORKAL_MANAGER_DEFAULT_ID_MAX / 2;
+
+            this.sendPacket(this.networkFrameGenerator(buffer, ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_ACK, id));
+        }
     }
 
     public sendCommand(command: any[]) {
