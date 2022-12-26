@@ -3676,6 +3676,39 @@
                             "type": "u8",
                             "$t": "1 if calibration has started, 0 otherwise"
                         }
+                    },
+                    {
+                        "name": "PitotCalibrationStateChanged",
+                        "id": "4",
+                        "arg": [
+                            {
+                                "name": "state",
+                                "type": "enum",
+                                "enum": [
+                                    {
+                                        "name": "done",
+                                        "$t": "Calibration is ok"
+                                    },
+                                    {
+                                        "name": "ready",
+                                        "$t": "Calibration is started, waiting user action"
+                                    },
+                                    {
+                                        "name": "in_progress",
+                                        "$t": "Calibration is in progress"
+                                    },
+                                    {
+                                        "name": "required",
+                                        "$t": "Calibration is required"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "lastError",
+                                "type": "u8",
+                                "$t": "lastError : 1 if an error occured and 0 if not"
+                            }
+                        ]
                     }
                 ]
             },
