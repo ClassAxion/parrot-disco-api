@@ -313,6 +313,15 @@ export default class ParrotDisco extends EventEmitter {
     public sendCommand(command: any[]) {
         const buffer = commandToBuffer(command[0], command[1], command[2], command[3], command[4]);
 
+        if (command.length >= 3 && command[2] === 'SendControllerGPS') {
+            buffer[buffer.length - 1] = 127;
+            buffer[buffer.length - 2] = 248;
+            buffer[buffer.length - 9] = 127;
+            buffer[buffer.length - 10] = 248;
+            buffer[buffer.length - 17] = 127;
+            buffer[buffer.length - 18] = 248;
+        }
+
         this.sendPacket(this.networkFrameGenerator(buffer));
     }
 
