@@ -313,7 +313,15 @@ export default class ParrotDisco extends EventEmitter {
     public sendCommand(command: any[]) {
         const buffer = commandToBuffer(command[0], command[1], command[2], command[3], command[4]);
 
-        this.sendPacket(this.networkFrameGenerator(buffer));
+        let type: ParrotDiscoConstans = null;
+        let id: ParrotDiscoConstans = null;
+
+        if (command[2]) {
+            type = ParrotDiscoConstans.ARNETWORKAL_FRAME_TYPE_DATA_WITH_ACK;
+            id = ParrotDiscoConstans.BD_NET_CD_ACK_ID;
+        }
+
+        this.sendPacket(this.networkFrameGenerator(buffer, type, id));
     }
 
     public sendPacket(packet) {
