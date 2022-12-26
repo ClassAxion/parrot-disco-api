@@ -12,7 +12,7 @@ export default class Camera {
     }
 
     public sendControllerGPS(lat: number, lng: number) {
-        this.instance.sendCommand([1, 'GPSSettings', 'SendControllerGPS', lat, lng]);
+        this.instance.sendCommand([1, 'GPSSettings', 'SendControllerGPS', lat, lng, 0, 0, 0]);
     }
 
     public resetHome() {
