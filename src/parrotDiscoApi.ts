@@ -317,7 +317,16 @@ export default class ParrotDisco extends EventEmitter {
     }
 
     public sendCommand(command: any[]) {
-        const buffer = commandToBuffer(command[0], command[1], command[2], command[3], command[4]);
+        const buffer = commandToBuffer(
+            command[0],
+            command[1],
+            command[2],
+            command[3],
+            command[4],
+            command[5],
+            command[6],
+            command[7],
+        );
 
         let type: ParrotDiscoConstans = null;
         let id: ParrotDiscoConstans = null;
