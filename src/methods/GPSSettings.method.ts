@@ -1,6 +1,6 @@
 import ParrotDiscoApi from '../parrotDiscoApi';
 
-export default class Camera {
+export default class GPSSettings {
     constructor(private instance: ParrotDiscoApi) {}
 
     public setHomeType(type: number) {
