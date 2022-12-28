@@ -17,6 +17,7 @@ import commandToBuffer from './utils/commandToBuffer.util';
 import MediaStreaming from './methods/MediaStreaming.method';
 import Camera from './methods/Camera.method';
 import Piloting from './methods/Piloting.method';
+import PilotingSettings from './methods/PilotingSettings.method';
 import Mavlink from './methods/Mavlink.method';
 import GPSSettings from './methods/GPSSettings.method';
 
@@ -40,6 +41,7 @@ export default class ParrotDisco extends EventEmitter {
     public MediaStreaming: MediaStreaming;
     public Camera: Camera;
     public Piloting: Piloting;
+    public PilotingSettings: PilotingSettings;
     public Mavlink: Mavlink;
     public GPSSettings: GPSSettings;
 
@@ -70,6 +72,7 @@ export default class ParrotDisco extends EventEmitter {
         this.MediaStreaming = new MediaStreaming(this);
         this.Camera = new Camera(this);
         this.Piloting = new Piloting(this);
+        this.PilotingSettings = new PilotingSettings(this);
         this.Mavlink = new Mavlink(this);
         this.GPSSettings = new GPSSettings(this);
     }
