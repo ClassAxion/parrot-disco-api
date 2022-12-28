@@ -20,6 +20,7 @@ import Piloting from './methods/Piloting.method';
 import PilotingSettings from './methods/PilotingSettings.method';
 import Mavlink from './methods/Mavlink.method';
 import GPSSettings from './methods/GPSSettings.method';
+import Common from './methods/Common.method';
 
 const Commands = require('./statics/commands.static.json');
 
@@ -44,6 +45,7 @@ export default class ParrotDisco extends EventEmitter {
     public PilotingSettings: PilotingSettings;
     public Mavlink: Mavlink;
     public GPSSettings: GPSSettings;
+    public Common: Common;
 
     private defaultConfig(): void {
         this.config.ip = this.config.ip || '192.168.42.1';
@@ -75,6 +77,7 @@ export default class ParrotDisco extends EventEmitter {
         this.PilotingSettings = new PilotingSettings(this);
         this.Mavlink = new Mavlink(this);
         this.GPSSettings = new GPSSettings(this);
+        this.Common = new Common(this);
     }
 
     public async discover(): Promise<boolean> {
