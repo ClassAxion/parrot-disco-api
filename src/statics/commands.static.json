@@ -2276,6 +2276,64 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "name": "VideoRecordingMode",
+                        "id": "7",
+                        "arg": {
+                            "name": "mode",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "quality",
+                                    "$t": "Maximize recording quality."
+                                },
+                                {
+                                    "name": "time",
+                                    "$t": "Maximize recording time."
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "VideoFramerate",
+                        "id": "8",
+                        "arg": {
+                            "name": "framerate",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "24_FPS",
+                                    "$t": "23.976 frames per second."
+                                },
+                                {
+                                    "name": "25_FPS",
+                                    "$t": "25 frames per second."
+                                },
+                                {
+                                    "name": "30_FPS",
+                                    "$t": "29.97 frames per second."
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "VideoResolutions",
+                        "id": "9",
+                        "arg": {
+                            "name": "type",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "rec1080_stream480",
+                                    "$t": "1080p recording, 480p streaming."
+                                },
+                                {
+                                    "name": "rec720_stream720",
+                                    "$t": "720p recording, 720p streaming."
+                                }
+                            ]
+                        }
                     }
                 ]
             },
@@ -2445,6 +2503,64 @@
                                 {
                                     "name": "none",
                                     "$t": "Video follows drone angles"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "VideoRecordingModeChanged",
+                        "id": "7",
+                        "arg": {
+                            "name": "mode",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "quality",
+                                    "$t": "Maximize recording quality."
+                                },
+                                {
+                                    "name": "time",
+                                    "$t": "Maximize recording time."
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "VideoFramerateChanged",
+                        "id": "8",
+                        "arg": {
+                            "name": "framerate",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "24_FPS",
+                                    "$t": "23.976 frames per second."
+                                },
+                                {
+                                    "name": "25_FPS",
+                                    "$t": "25 frames per second."
+                                },
+                                {
+                                    "name": "30_FPS",
+                                    "$t": "29.97 frames per second."
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "VideoResolutionsChanged",
+                        "id": "9",
+                        "arg": {
+                            "name": "type",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "rec1080_stream480",
+                                    "$t": "1080p recording, 480p streaming."
+                                },
+                                {
+                                    "name": "rec720_stream720",
+                                    "$t": "720p recording, 720p streaming."
                                 }
                             ]
                         }
