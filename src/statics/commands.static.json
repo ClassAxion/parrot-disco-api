@@ -937,6 +937,46 @@
                         ]
                     },
                     {
+                        "name": "MotionState",
+                        "id": "13",
+                        "arg": {
+                            "name": "state",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "steady",
+                                    "$t": "Drone is moving"
+                                },
+                                {
+                                    "name": "moving",
+                                    "$t": "Drone is moving"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "WindStateChanged",
+                        "id": "19",
+                        "arg": {
+                            "name": "state",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "ok",
+                                    "$t": "The wind strength can be handled properly by the drone."
+                                },
+                                {
+                                    "name": "warning",
+                                    "$t": "The wind strength begins to be too strong for the drone to fly correctly."
+                                },
+                                {
+                                    "name": "critical",
+                                    "$t": "The wind strength is too strong for the drone to fly correctly."
+                                }
+                            ]
+                        }
+                    },
+                    {
                         "name": "VibrationLevelChanged",
                         "id": "20",
                         "arg": {
@@ -1309,21 +1349,12 @@
                         }
                     },
                     {
-                        "name": "LandingMode",
+                        "name": "SetMotionDetectionMode",
                         "id": "16",
                         "arg": {
-                            "name": "value",
-                            "type": "enum",
-                            "enum": [
-                                {
-                                    "name": "LINEAR",
-                                    "$t": "Linear landing."
-                                },
-                                {
-                                    "name": "SPIRALE",
-                                    "$t": "Spirale landing."
-                                }
-                            ]
+                            "name": "enable",
+                            "type": "u8",
+                            "$t": "1 to enable the motion detection, 0 to disable it."
                         }
                     }
                 ]
@@ -1567,21 +1598,12 @@
                         }
                     },
                     {
-                        "name": "LandingModeChanged",
+                        "name": "MotionDetection",
                         "id": "16",
                         "arg": {
-                            "name": "value",
-                            "type": "enum",
-                            "enum": [
-                                {
-                                    "name": "LINEAR",
-                                    "$t": "Linear landing."
-                                },
-                                {
-                                    "name": "SPIRALE",
-                                    "$t": "Spirale landing."
-                                }
-                            ]
+                            "name": "enable",
+                            "type": "u8",
+                            "$t": "1 if motion detection is enabled, 0 otherwise."
                         }
                     }
                 ]
@@ -3113,6 +3135,44 @@
                         "name": "features",
                         "type": "u64",
                         "$t": "Bitfield representing enabled features."
+                    }
+                }
+            },
+            {
+                "name": "Sound",
+                "id": "35",
+                "cmd": [
+                    {
+                        "name": "StartAlertSound",
+                        "id": "0",
+                        "$t": "Start alert sound"
+                    },
+                    {
+                        "name": "StopAlertSound",
+                        "id": "1",
+                        "$t": "Stop alert sound"
+                    }
+                ]
+            },
+            {
+                "name": "SoundState",
+                "id": "36",
+                "cmd": {
+                    "name": "AlertSound",
+                    "id": "0",
+                    "arg": {
+                        "name": "state",
+                        "type": "enum",
+                        "enum": [
+                            {
+                                "name": "stopped",
+                                "$t": "Alert sound is not playing"
+                            },
+                            {
+                                "name": "playing",
+                                "$t": "Alert sound is playing"
+                            }
+                        ]
                     }
                 }
             }

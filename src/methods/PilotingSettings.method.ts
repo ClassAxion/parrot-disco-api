@@ -26,4 +26,8 @@ export default class PilotingSettings {
     public setCirclingAltitude(meters: number) {
         this.instance.sendCommand([1, 'PilotingSettings', 'CirclingAltitude', meters]);
     }
+
+    public setMotionDetection(enable: boolean) {
+        this.instance.sendCommand([1, 'PilotingSettings', 'SetMotionDetectionMode', enable ? 1 : 0]);
+    }
 }
