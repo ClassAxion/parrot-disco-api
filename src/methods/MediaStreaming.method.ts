@@ -7,7 +7,7 @@ export default class MediaStreaming {
         this.instance.sendCommand([1, 'MediaStreaming', 'VideoEnable', value]);
     }
 
-    private setVideoStreamMode(mode: string) {
+    public setVideoStreamMode(mode: string) {
         let value = 0;
 
         switch (mode) {
