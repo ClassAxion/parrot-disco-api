@@ -23,6 +23,7 @@ import GPSSettings from './methods/GPSSettings.method';
 import Common from './methods/Common.method';
 import PictureSettings from './methods/PictureSettings.method';
 import Test from './methods/Test.method';
+import MediaRecord from './methods/MediaRecord.method';
 
 const Commands = require('./statics/commands.static.json');
 
@@ -50,6 +51,7 @@ export default class ParrotDisco extends EventEmitter {
     public Common: Common;
     public PictureSettings: PictureSettings;
     public Test: Test;
+    public MediaRecord: MediaRecord;
 
     private defaultConfig(): void {
         this.config.ip = this.config.ip || '192.168.42.1';
@@ -84,6 +86,7 @@ export default class ParrotDisco extends EventEmitter {
         this.Common = new Common(this);
         this.PictureSettings = new PictureSettings(this);
         this.Test = new Test(this);
+        this.MediaRecord = new MediaRecord(this);
     }
 
     public async discover(): Promise<boolean> {
