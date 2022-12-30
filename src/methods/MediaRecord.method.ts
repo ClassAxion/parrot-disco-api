@@ -4,11 +4,11 @@ export default class MediaRecord {
     constructor(private instance: ParrotDiscoApi) {}
 
     public takePicture() {
-        this.instance.sendCommand([1, 'MediaRecord', 'Picture', 0]);
+        this.instance.sendCommand([1, 'MediaRecord', 'PictureV2', 0]);
     }
 
     private setRecording(mode: number) {
-        this.instance.sendCommand([1, 'MediaRecord', 'Video', mode, 0]);
+        this.instance.sendCommand([1, 'MediaRecord', 'VideoV2', mode, 0]);
     }
 
     public startRecording() {
