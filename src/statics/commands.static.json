@@ -2570,41 +2570,89 @@
             {
                 "name": "MediaStreaming",
                 "id": "21",
-                "cmd": {
-                    "name": "VideoEnable",
-                    "id": "0",
-                    "arg": {
-                        "name": "enable",
-                        "type": "u8",
-                        "$t": "1 to enable, 0 to disable."
+                "cmd": [
+                    {
+                        "name": "VideoEnable",
+                        "id": "0",
+                        "arg": {
+                            "name": "enable",
+                            "type": "u8",
+                            "$t": "1 to enable, 0 to disable."
+                        }
+                    },
+                    {
+                        "name": "VideoStreamMode",
+                        "id": "1",
+                        "arg": {
+                            "name": "mode",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "low_latency",
+                                    "$t": "Minimize latency with average reliability (best for piloting)."
+                                },
+                                {
+                                    "name": "high_reliability",
+                                    "$t": "Maximize the reliability with an average latency (best when streaming quality is important but not the latency)."
+                                },
+                                {
+                                    "name": "high_reliability_low_framerate",
+                                    "$t": "Maximize the reliability using a framerate decimation with an average latency (best when streaming quality is important but not the latency)."
+                                }
+                            ]
+                        }
                     }
-                }
+                ]
             },
             {
                 "name": "MediaStreamingState",
                 "id": "22",
-                "cmd": {
-                    "name": "VideoEnableChanged",
-                    "id": "0",
-                    "arg": {
-                        "name": "enabled",
-                        "type": "enum",
-                        "enum": [
-                            {
-                                "name": "enabled",
-                                "$t": "Video streaming is enabled."
-                            },
-                            {
-                                "name": "disabled",
-                                "$t": "Video streaming is disabled."
-                            },
-                            {
-                                "name": "error",
-                                "$t": "Video streaming failed to start."
-                            }
-                        ]
+                "cmd": [
+                    {
+                        "name": "VideoEnableChanged",
+                        "id": "0",
+                        "arg": {
+                            "name": "enabled",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "enabled",
+                                    "$t": "Video streaming is enabled."
+                                },
+                                {
+                                    "name": "disabled",
+                                    "$t": "Video streaming is disabled."
+                                },
+                                {
+                                    "name": "error",
+                                    "$t": "Video streaming failed to start."
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "VideoStreamModeChanged",
+                        "id": "1",
+                        "arg": {
+                            "name": "mode",
+                            "type": "enum",
+                            "enum": [
+                                {
+                                    "name": "low_latency",
+                                    "$t": "Minimize latency with average reliability (best for piloting)."
+                                },
+                                {
+                                    "name": "high_reliability",
+                                    "$t": "Maximize the reliability with an average latency (best when streaming quality is important but not the latency)."
+                                },
+                                {
+                                    "name": "high_reliability_low_framerate",
+                                    "$t": "Maximize the reliability using a framerate decimation with an average latency (best when streaming quality is important but not the latency)."
+                                }
+                            ]
+                        }
                     }
-                }
+                ]
             },
             {
                 "name": "GPSSettings",
