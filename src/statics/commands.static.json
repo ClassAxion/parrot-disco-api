@@ -3817,15 +3817,26 @@
             {
                 "name": "Calibration",
                 "id": "13",
-                "cmd": {
-                    "name": "MagnetoCalibration",
-                    "id": "0",
-                    "arg": {
-                        "name": "calibrate",
-                        "type": "u8",
-                        "$t": "1 if the calibration should be started, 0 if it should be aborted"
+                "cmd": [
+                    {
+                        "name": "MagnetoCalibration",
+                        "id": "0",
+                        "arg": {
+                            "name": "calibrate",
+                            "type": "u8",
+                            "$t": "1 if the calibration should be started, 0 if it should be aborted"
+                        }
+                    },
+                    {
+                        "name": "PitotCalibration",
+                        "id": "1",
+                        "arg": {
+                            "name": "calibrate",
+                            "type": "u8",
+                            "$t": "The pitot calibration process is started or aborted. Then, event [PitotCalibrationStateChanged](#0-14-4) is triggered with the current calibration state."
+                        }
                     }
-                }
+                ]
             },
             {
                 "name": "CalibrationState",

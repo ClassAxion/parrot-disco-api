@@ -3,6 +3,10 @@ import ParrotDiscoApi from '../parrotDiscoApi';
 export default class Piloting {
     constructor(private instance: ParrotDiscoApi) {}
 
+    public flatTrim() {
+        this.instance.sendCommand([1, 'Piloting', 'FlatTrim']);
+    }
+
     public takeOff() {
         this.instance.sendCommand([1, 'Piloting', 'TakeOff']);
     }
