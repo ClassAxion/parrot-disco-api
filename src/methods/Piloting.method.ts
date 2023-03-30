@@ -11,6 +11,10 @@ export default class Piloting {
         this.instance.sendCommand([1, 'Piloting', 'TakeOff']);
     }
 
+    public land() {
+        this.instance.sendCommand([1, 'Piloting', 'Landing']);
+    }
+
     private setUserTakeOff(state: number) {
         this.instance.sendCommand([1, 'Piloting', 'UserTakeOff', state]);
     }
