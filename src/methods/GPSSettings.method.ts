@@ -33,4 +33,8 @@ export default class GPSSettings {
     public resetHome() {
         this.instance.sendCommand([1, 'GPSSettings', 'ResetHome']);
     }
+
+    public setMinAltitude(altitude: number = 100) {
+        this.instance.sendCommand([5, 'GPSSettings', 'ReturnHomeMinAltitude', altitude]);
+    }
 }
