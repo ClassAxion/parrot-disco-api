@@ -2767,6 +2767,15 @@
                             "type": "u16",
                             "$t": "Delay in second"
                         }
+                    },
+                    {
+                        "name": "ReturnHomeMinAltitude",
+                        "id": "5",
+                        "arg": {
+                            "name": "value",
+                            "type": "float",
+                            "$t": "Altitude in meters, relative to the take off point."
+                        }
                     }
                 ]
             },
@@ -2873,6 +2882,27 @@
                             "type": "u16",
                             "$t": "Delay in second"
                         }
+                    },
+                    {
+                        "name": "ReturnHomeMinAltitudeChanged",
+                        "id": "7",
+                        "arg": [
+                            {
+                                "name": "value",
+                                "type": "float",
+                                "$t": "Current value in meters, relative to take off altitude."
+                            },
+                            {
+                                "name": "min",
+                                "type": "float",
+                                "$t": "Lower bound in meters, relative to take off altitude."
+                            },
+                            {
+                                "name": "max",
+                                "type": "float",
+                                "$t": "Upper bound in meters, relative to take off altitude."
+                            }
+                        ]
                     }
                 ]
             },
